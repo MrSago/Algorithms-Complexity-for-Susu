@@ -73,7 +73,7 @@ int _partition(std::vector<T>& arr, int low, int high) {
 template<typename T>
 void _recqs(std::vector<T>& arr, int low, int high) {
     while (low < high) {
-        T p = _partition(arr, low, high);
+        int p = _partition(arr, low, high);
         if (p - low < high - p) {
             _recqs(arr, low, p);
             low = p + 1;
