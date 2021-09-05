@@ -57,5 +57,40 @@ long long selectionSort(std::vector<T>& arr) {
     return (stop - start).count();
 }
 
+
+template<typename T>
+int _partition(std::vector<T>& arr, int low, int high) {
+    T pi = arr[(low + high) / 2];
+    for (int i = low, j = high; ; ++i, --j) {
+        while (arr[i] < pi) ++i;
+        while (arr[j] > pi) --j;
+        if (i >= j) return j;
+        std::swap(arr[i], arr[j]);
+    }
+    throw std::runtime_error("Search partition error");
+}
+
+template<typename T>
+void _recqs(std::vector<T>& arr, int low, int high) {
+    while (low < high) {
+        T p = _partition(arr, low, high);
+        if (p - low < high - p) {
+            _recqs(arr, low, p);
+            low = p + 1;
+        } else {
+            _recqs(arr, p + 1, high);
+            high = p;
+        }
+    }
+}
+
+template<typename T>
+long long quickSort(std::vector<T>& arr) {
+    auto start = std::chrono::high_resolution_clock::now();
+    _recqs(arr, 0, (int)arr.size() - 1);
+    auto stop = std::chrono::high_resolution_clock::now();
+    return (stop - start).count();
+}
+
 #endif //_SORT_H
 
