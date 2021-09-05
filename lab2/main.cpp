@@ -29,7 +29,7 @@ template<typename T>
 void runTest(std::string sort_name, long long (*sort_fun)(std::vector<T>&)) {
     std::cout << "\n============ " << sort_name << " ============\n\n";
     std::cout << "Best case (increasing array):\n";
-    std::cout << "    " << std::setw(10) << "Size" << "Time\n";
+    std::cout << "    " << std::setw(10) << std::left << "Size" << "Time\n";
     test_t test_res = testSort<T>(increasingVector, sort_fun);
     test_print(test_res);
 
