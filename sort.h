@@ -21,7 +21,8 @@ template<typename T>
 long long insertionSort(std::vector<T>& arr) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    for (int i = 1; i < (int)arr.size(); ++i) {
+    int sz = (int)arr.size();
+    for (int i = 1; i < sz; ++i) {
         T tmp = arr[i];
         int j = i - 1;
         for (; j >= 0 && arr[j] > tmp; --j) {
@@ -40,9 +41,10 @@ template<typename T>
 long long selectionSort(std::vector<T>& arr) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    for (int i = 0; i < (int)arr.size() - 1; ++i) {
+    int sz = (int)arr.size();
+    for (int i = 0; i < sz - 1; ++i) {
         int min_i = i;
-        for (int j = i + 1; j < (int)arr.size(); ++j) {
+        for (int j = i + 1; j < sz; ++j) {
             if (arr[j] < arr[min_i]) {
                 min_i = j;
             }

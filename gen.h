@@ -4,14 +4,14 @@
 
 #include <vector>
 #include <random>
-#include <ctime>
 
-constexpr int RANGE = int(1e6);
+constexpr int RANGE = int(1e9);
 
 
 template<typename T>
 std::vector<T> randomVector(size_t sz) {
-    std::mt19937 gen(time(NULL)); 
+    std::random_device device;
+    std::mt19937 gen(device()); 
     std::uniform_int_distribution<T> uid(-RANGE, RANGE); 
     std::vector<T> arr(sz);
     for (auto& it : arr) {
