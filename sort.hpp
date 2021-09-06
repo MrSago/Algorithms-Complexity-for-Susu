@@ -1,6 +1,6 @@
 
-#ifndef _SORT_H
-#define _SORT_H
+#ifndef _SORT_HPP
+#define _SORT_HPP
 
 #include <vector>
 #include <chrono>
@@ -94,5 +94,5 @@ long long quickSort(std::vector<T>& arr) {
     return (stop - start).count();
 }
 
-#endif //_SORT_H
+#endif //_SORT_HPP
 

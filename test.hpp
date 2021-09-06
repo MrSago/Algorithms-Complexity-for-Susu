@@ -1,16 +1,16 @@
 
-#ifndef _TEST_H
-#define _TEST_H
+#ifndef _TEST_HPP
+#define _TEST_HPP
 
 #include <iostream>
 #include <iomanip>
 #include <vector>
 
-#include "gen.h"
-#include "sort.h"
+#include "gen.hpp"
+#include "sort.hpp"
 
 constexpr int ARR_SIZE[] = {
-    1000, 2000, 3500, 6000, 10000, 15000, 20000, 30000, 50000
+    1000, 2000, 3500, 6000, 10000, 15000, 20000, 30000, 50000, 100000
 };
 
 using test_t = std::vector<std::pair<int, long long>>;
@@ -57,7 +57,7 @@ void _run_test(std::vector<T> (*gen_fun)(size_t), long long (*sort_fun)(std::vec
 
 
 template<typename T>
-void startTest(std::string sort_name, long long (*sort_fun)(std::vector<T>&)) {
+void startTestSort(std::string sort_name, long long (*sort_fun)(std::vector<T>&)) {
     std::cout << "\n============ " << sort_name << " ============\n\n";
 
     std::cout << "Best case (increasing array):\n";
@@ -72,5 +72,5 @@ void startTest(std::string sort_name, long long (*sort_fun)(std::vector<T>&)) {
     std::cout << "========================================\n\n";
 }
 
-#endif //_TEST_H
+#endif //_TEST_HPP
 

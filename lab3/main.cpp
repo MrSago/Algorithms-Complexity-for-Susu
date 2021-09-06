@@ -10,8 +10,7 @@ int main() {
     using mytype_t = int64_t;
 
     std::cerr << "Testig started...";
-    startTestSort<mytype_t>("Insertion Sort", insertionSort);
-    startTestSort<mytype_t>("Selection Sort", selectionSort);
+    startTestSort<mytype_t>("Quick Sort", quickSort);
     std::cerr << "\nDone!";
 
     return 0;
