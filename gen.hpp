@@ -32,9 +32,7 @@ std::vector<T> increasingVector(size_t sz) {
 template<typename T>
 std::vector<T> decreasingVector(size_t sz) {
     std::vector<T> arr(sz);
-    for (auto& it: arr) {
-        it = static_cast<T>(sz--);
-    }
+    std::iota(arr.rbegin(), arr.rend(), 0);
     return arr;
 }
 
