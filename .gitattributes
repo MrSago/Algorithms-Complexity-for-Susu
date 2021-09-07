@@ -1,0 +1,17 @@
+
+.gitattributes          export-ignore
+.gitignore              export-ignore
+
+* text=auto
+
+# GitHub
+.gitattributes          text
+.gitignore              text
+
+# Source files
+*.cpp                   text
+*.hpp                   text
+
+# Test files
+*.txt                   text
+
