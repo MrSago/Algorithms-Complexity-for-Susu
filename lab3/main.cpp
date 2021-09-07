@@ -1,8 +1,8 @@
 
 #include <iostream>
 
-#include "../sort.hpp"
-#include "../test.hpp"
+#include "../templ/sort.hpp"
+#include "../templ/test.hpp"
 
 
 int main() {

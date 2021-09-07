@@ -5,10 +5,9 @@
 #include <chrono>
 #include <omp.h>
 
-#include "../matrix.hpp"
 
-
-long long Floyd(int** w, int N) {
+template<typename T>
+long long Floyd(T** w, int N) {
     auto start = std::chrono::high_resolution_clock::now();
 
     int k, i, j;
@@ -26,7 +25,8 @@ long long Floyd(int** w, int N) {
 }
 
 
-long long FloydParallel(int** w, int N, int threads) {
+template<typename T>
+long long FloydParallel(T** w, int N, int threads) {
     auto start = std::chrono::high_resolution_clock::now();
 
     int k, i, j;

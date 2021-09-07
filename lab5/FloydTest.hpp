@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "Floyd.hpp"
-#include "../matrix.hpp"
+#include "../templ/matrix.hpp"
 
 
 template<typename T>
