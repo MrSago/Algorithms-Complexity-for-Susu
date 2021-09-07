@@ -50,7 +50,9 @@ long long selectionSort(std::vector<T>& arr) {
             }
         }
         if (min_i != i) {
-            std::swap(arr[min_i], arr[i]);
+            T tmp = arr[min_i];
+            arr[min_i] = arr[i];
+            arr[i] = tmp;
         }
     }
 
@@ -61,13 +63,15 @@ long long selectionSort(std::vector<T>& arr) {
 
 
 template<typename T>
-int _partition(std::vector<T>& arr, int low, int high) {
+inline int _partition(std::vector<T>& arr, int low, int high) {
     T pi = arr[(low + high) / 2];
     for (int i = low, j = high; ; ++i, --j) {
         while (arr[i] < pi) ++i;
         while (arr[j] > pi) --j;
         if (i >= j) return j;
-        std::swap(arr[i], arr[j]);
+        T tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
     throw std::runtime_error("Search partition error");
 }
