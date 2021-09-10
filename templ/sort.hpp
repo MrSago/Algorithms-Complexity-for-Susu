@@ -76,20 +76,20 @@ inline int _partition(T* arr, int low, int high) {
     for (int i = low, j = high; ; ++i, --j) {
         while (arr[i] < pi) {
             ++i;
-            ops += 6;
+            ops += 4;
         }
         while (arr[j] > pi) {
             --j;
-            ops += 6;
+            ops += 4;
         }
         if (i >= j) {
-            ops += 8;
+            ops += 4;
             return j;
         }
         T tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;
-        ops += 22;
+        ops += 18;
     }
     throw std::runtime_error("Search partition error");
 }
@@ -104,9 +104,9 @@ void _recqs(T* arr, int low, int high) {
             _recqs(arr, p + 1, high);
             high = p;
         }
-        ops += 17;
+        ops += 15;
     }
-    ops += 7;
+    ops += 4;
 }
 template<typename T>
 long long quickSort(T* arr, int sz) {
@@ -120,25 +120,25 @@ long long quickSort(T* arr, int sz) {
 
 template<typename T>
 inline int _partitionWorst(T* arr, int low, int high) {
-    ops += 8;
+    ops += 7;
     T pi = arr[high - 1];
     for (int i = low, j = high; ; ++i, --j) {
         while (arr[i] < pi) {
             ++i;
-            ops += 6;
+            ops += 4;
         }
         while (arr[j] > pi) {
             --j;
-            ops += 6;
+            ops += 4;
         }
         if (i >= j) {
-            ops += 8;
+            ops += 4;
             return j;
         }
         T tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;
-        ops += 22;
+        ops += 18;
     }
     throw std::runtime_error("Search partition error");
 }
@@ -153,13 +153,13 @@ void _recqsWorst(T* arr, int low, int high) {
             _recqsWorst(arr, p + 1, high);
             high = p;
         }
-        ops += 17;
+        ops += 15;
     }
-    ops += 7;
+    ops += 4;
 }
 template<typename T>
 long long quickSortWorst(T* arr, int sz) {
-    ops = 0;
+    ops = 5;
     auto start = std::chrono::high_resolution_clock::now();
     _recqsWorst(arr, 0, sz - 1);
     auto stop = std::chrono::high_resolution_clock::now();
