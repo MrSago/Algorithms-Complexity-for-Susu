@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <random>
-#include <ctime>
 
 
 template<typename T>
@@ -39,7 +38,7 @@ void freeMatrix(T** m, int N) {
 
 template<typename T>
 void randomMatrix(T** m, int N) {
-    std::mt19937 gen(time(NULL));
+    std::mt19937 gen(0);
     std::uniform_int_distribution<T> uid(1, 10000);
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j <= i; ++j) {
