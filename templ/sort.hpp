@@ -28,10 +28,10 @@ long long insertionSort(T* arr, int sz) {
         int j = i - 1;
         for (; j >= 0 && arr[j] > tmp; --j) {
             arr[j + 1] = arr[j];
-            ops += 12;
+            ops += 6;
         }
         arr[j + 1] = tmp;
-        ops += 16;
+        ops += 7;
     }
 
     auto stop = std::chrono::high_resolution_clock::now();
@@ -50,17 +50,17 @@ long long selectionSort(T* arr, int sz) {
         for (int j = i + 1; j < sz; ++j) {
             if (arr[j] < arr[min_i]) {
                 min_i = j;
-                ops += 3;
+                ops += 2;
             }
-            ops += 8;
+            ops += 5;
         }
         if (min_i != i) {
             T tmp = arr[min_i];
             arr[min_i] = arr[i];
             arr[i] = tmp;
-            ops += 9;
+            ops += 7;
         }
-        ops += 11;
+        ops += 5;
     }
 
     auto stop = std::chrono::high_resolution_clock::now();

@@ -4,7 +4,8 @@
 
 
 int main () {
-    constexpr size_t cnt = (size_t)10e9;
+    freopen("perfomance.txt", "w", stdout);
+    constexpr size_t cnt = (size_t)100e9;
     constexpr size_t ops = cnt * 3;
     size_t i = 0;
 
