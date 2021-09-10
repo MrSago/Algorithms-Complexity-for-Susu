@@ -27,8 +27,8 @@ void _run_test(std::vector<T> (*gen_fun)(size_t), long long (*sort_fun)(T*, int)
     for (auto& sz : arr_sizes) {
         ops = 0;
         std::vector<T> arr = gen_fun(sz);
-        long long time_calc = sort_fun(arr.data(), (int)arr.size());
-        if (!_check_sort(arr.data(), (int)arr.size())) {
+        long long time_calc = sort_fun(arr.data(), static_cast<int>(arr.size()));
+        if (!_check_sort(arr.data(), static_cast<int>(arr.size()))) {
             throw std::runtime_error("Array not sorted!");
         }
         std::cout << "    " << std::setw(10) << std::left << sz << std::setw(15) << std::left << time_calc * 1e-9 << ops << '\n';
