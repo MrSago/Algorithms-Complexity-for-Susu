@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../templ/FloydTest.hpp"
+#include "../templ/floyd_test.hpp"
 
 
 int main() {
@@ -16,7 +16,7 @@ int main() {
     std::cerr << "Signle thread Floyd test...";
     singleThreadFloydTest<mytype_t>(matrix_sizes);
 
-    std::cerr << "\nMulti thread Floyd test...";
+    std::cerr << "\nMulti threads Floyd test...";
     multiThreadFloydTest<mytype_t>(matrix_sizes, threads);
 
     std::cerr << "\nDone!\n";

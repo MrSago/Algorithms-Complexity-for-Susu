@@ -5,7 +5,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include "Floyd.hpp"
+#include "floyd.hpp"
 #include "matrix.hpp"
 
 
@@ -27,7 +27,7 @@ void singleThreadFloydTest(std::vector<int>& matrix_sizes) {
 
 template<typename T>
 void multiThreadFloydTest(std::vector<int>& matrix_sizes, int threads) {
-    std::cout << "\n============ Floyd in " << threads << " thread ============\n\n";
+    std::cout << "\n============ Floyd in " << threads << " threads ============\n\n";
     std::cout << "    " << std::setw(10) << std::left << "Size" << std::setw(15) << std::left << "Time (sec)" << "Operations\n";
     for (auto& sz : matrix_sizes) {
         ops = 0;
@@ -37,7 +37,7 @@ void multiThreadFloydTest(std::vector<int>& matrix_sizes, int threads) {
         std::cout << "    " << std::setw(10) << std::left << sz << std::setw(15) << std::left << time_calc * 1e-9 << ops << '\n';
         freeMatrix(matrix, sz);
     }
-    std::cout << "============================================\n\n";
+    std::cout << "=============================================\n\n";
 }
 
 #endif //_FLOYD_TEST_HPP
