@@ -9,7 +9,7 @@ int main () {
     constexpr size_t ops = cnt * 3;
     size_t i = 0;
 
-    std::cerr << "Test started...";
+    std::cerr << "Testing started...";
     auto start = std::chrono::high_resolution_clock::now();
 
     while (i < cnt) {

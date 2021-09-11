@@ -7,7 +7,7 @@ def main():
     ops = cnt * 3
     i = 0
 
-    print("Test started...",end='')
+    print("Testing started...",end='')
     start = time_ns()
 
     while i < cnt:

@@ -19,8 +19,9 @@ long long Floyd(T** w, int N) {
             for (j = 0; j < N; ++j) {
                 if (w[i][k] != 0 && w[k][j] != 0) {
                     w[i][j] = std::min(w[i][j], w[i][k] + w[k][j]);
+                    ops += 6;
                 }
-                ops += 23;
+                ops += 12;
             }
             ops += 5;
         }
@@ -48,8 +49,9 @@ long long FloydParallel(T** w, int N, int threads) {
                 for (j = 0; j < N; ++j) {
                     if (w[i][k] != 0 && w[k][j] != 0) {
                         w[i][j] = std::min(w[i][j], w[i][k] + w[k][j]);
+                        ops_th += 6;
                     }
-                    ops_th += 23;
+                    ops_th += 12;
                 }
                 ops_th += 5;
             }
