@@ -16,3 +16,7 @@
 # Test files
 *.txt                   text
 
+# Office files
+*docx                   bin
+*xlsx                   bin
+
