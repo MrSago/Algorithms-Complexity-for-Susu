@@ -14,8 +14,8 @@ int main() {
     std::cout << "N = ";
     std::cin >> N;
 
-    singleThreadTest<mytype_t>(N);
-    multiThreadTest<mytype_t>(N, threads);
+    singleThreadFloydTest<mytype_t>(N);
+    multiThreadFloydTest<mytype_t>(N, threads);
 
     return 0;
 }

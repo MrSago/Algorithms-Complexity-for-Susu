@@ -1,6 +1,6 @@
 
-#ifndef _GEN_HPP
-#define _GEN_HPP
+#ifndef _GEN_VECTOR_HPP
+#define _GEN_VECTOR_HPP
 
 #include <vector>
 #include <algorithm>
@@ -39,5 +39,5 @@ std::vector<T> decreasingVector(size_t sz) {
     return arr;
 }
 
-#endif //_GEN_HPP
+#endif //_GEN_VECTOR_HPP
 

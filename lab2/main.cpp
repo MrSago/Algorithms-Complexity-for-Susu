@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "../templ/sort.hpp"
-#include "../templ/test.hpp"
+#include "../templ/test_sort.hpp"
 
 
 int main() {

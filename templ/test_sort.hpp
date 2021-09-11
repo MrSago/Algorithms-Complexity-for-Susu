@@ -1,13 +1,13 @@
 
-#ifndef _TEST_HPP
-#define _TEST_HPP
+#ifndef _TEST_SORT_HPP
+#define _TEST_SORT_HPP
 
 #include <iostream>
 #include <iomanip>
 #include <vector>
 #include <cstring>
 
-#include "gen.hpp"
+#include "gen_vector.hpp"
 #include "sort.hpp"
 
 
@@ -21,7 +21,7 @@ void _print_vector(std::vector<T>& arr) {
 
 
 template<typename T>
-void _run_test(std::vector<T> (*gen_fun)(size_t), long long (*sort_fun)(T*, int), std::vector<size_t>& arr_sizes) {
+void _run_test_sort(std::vector<T> (*gen_fun)(size_t), long long (*sort_fun)(T*, int), std::vector<size_t>& arr_sizes) {
     extern size_t ops;
     std::cout << "    " << std::setw(10) << std::left << "Size" << std::setw(15) << std::left << "Time (sec)" << "Operations\n";
     for (auto& sz : arr_sizes) {
@@ -42,16 +42,16 @@ void startTestSort(const char sort_name[], long long (*sort_fun)(T*, int), std::
     std::cout << "\n============ " << sort_name << " ============\n\n";
 
     std::cout << "Increasing array:\n";
-    _run_test(increasingVector, sort_fun, arr_sizes);
+    _run_test_sort(increasingVector, sort_fun, arr_sizes);
 
     std::cout << "Random array:\n";
-    _run_test(randomVector, sort_fun, arr_sizes);
+    _run_test_sort(randomVector, sort_fun, arr_sizes);
 
     std::cout << "Decreasing array:\n";
-    _run_test(decreasingVector, sort_fun, arr_sizes);
+    _run_test_sort(decreasingVector, sort_fun, arr_sizes);
 
     std::cout << "=============" << std::string(strlen(sort_name), '=') << "=============\n\n";
 }
 
-#endif //_TEST_HPP
+#endif //_TEST_SORT_HPP
 
