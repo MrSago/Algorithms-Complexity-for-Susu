@@ -37,9 +37,9 @@ void freeMatrix(T** m, int N) {
 
 
 template<typename T>
-void randomMatrix(T** m, int N) {
-    std::mt19937 gen(0);
-    std::uniform_int_distribution<T> uid(1, 10000);
+void randomMatrix(T** m, int N, unsigned seed) {
+    std::mt19937 gen(seed);
+    std::uniform_int_distribution<T> uid(0, 9);
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j <= i; ++j) {
             if (i == j) {

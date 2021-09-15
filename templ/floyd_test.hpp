@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <ctime>
 
 #include "floyd.hpp"
 #include "matrix.hpp"
@@ -16,7 +17,7 @@ void singleThreadFloydTest(std::vector<int>& matrix_sizes) {
     for (auto& sz : matrix_sizes) {
         ops = 0;
         T** matrix = newMatrix<T>(sz);
-        randomMatrix(matrix, sz);
+        randomMatrix(matrix, sz, time(0));
         long long time_calc = Floyd(matrix, sz);
         std::cout << "    " << std::setw(10) << std::left << sz << std::setw(15) << std::left << time_calc * 1e-9 << ops << '\n';
         freeMatrix(matrix, sz);
@@ -32,7 +33,7 @@ void multiThreadFloydTest(std::vector<int>& matrix_sizes, int threads) {
     for (auto& sz : matrix_sizes) {
         ops = 0;
         T** matrix = newMatrix<T>(sz);
-        randomMatrix(matrix, sz);
+        randomMatrix(matrix, sz, time(0));
         long long time_calc = FloydParallel(matrix, sz, threads);
         std::cout << "    " << std::setw(10) << std::left << sz << std::setw(15) << std::left << time_calc * 1e-9 << ops << '\n';
         freeMatrix(matrix, sz);
