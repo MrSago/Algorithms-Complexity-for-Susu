@@ -2,14 +2,15 @@
 #include <iostream>
 #include <vector>
 
-#include "../templ/floyd_test.hpp"
+#include "../test/test_floyd.hpp"
 
 
 int main() {
     freopen("result.txt", "w", stdout);
     using mytype_t = int;
     int threads = 4;
-    std::vector<int> matrix_sizes { 100, 200, 300, 500, 750, 1000, 1500, 2000, 2500, 3000 };
+    std::vector<int> matrix_sizes { 100, 200, 300, 500, 750,
+                                    1000, 1500, 2000, 2500, 3000 };
 
     std::cerr << "Testing started...\n";
 

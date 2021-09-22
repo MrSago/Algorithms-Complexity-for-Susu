@@ -16,10 +16,7 @@ std::vector<T> randomVector(size_t sz) {
     std::uniform_int_distribution<T> uid(-RANGE, RANGE);
     std::vector<T> arr(sz);
     std::generate(arr.begin(), arr.end(),
-        [&uid, &gen]() -> T {
-            return uid(gen);
-        }
-    );
+                  [&uid, &gen]() -> T { return uid(gen); });
     return arr;
 }
 
