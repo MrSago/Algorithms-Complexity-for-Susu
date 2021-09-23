@@ -7,6 +7,16 @@
 
 
 template<typename T>
+void readMatrix(T** matrix, int N) {
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            std::cin >> matrix[i][j];
+        }
+    }
+}
+
+
+template<typename T>
 void printMatrix(T** m, int N) {
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < N; ++j) {
