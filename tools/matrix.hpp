@@ -7,9 +7,9 @@
 
 
 template<typename T>
-void readMatrix(T** matrix, int N) {
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j < N; ++j) {
+void readMatrix(T** matrix, size_t N) {
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < N; ++j) {
             std::cin >> matrix[i][j];
         }
     }
@@ -17,9 +17,9 @@ void readMatrix(T** matrix, int N) {
 
 
 template<typename T>
-void printMatrix(T** m, int N) {
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j < N; ++j) {
+void printMatrix(T** m, size_t N) {
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < N; ++j) {
             std::cout << m[i][j] << ' ';
         }
         std::cout << '\n';
@@ -28,9 +28,9 @@ void printMatrix(T** m, int N) {
 
 
 template<typename T>
-T** newMatrix(int N) {
+T** newMatrix(size_t N) {
     T** m = new T*[N];
-    for (int i = 0; i < N; ++i) {
+    for (size_t i = 0; i < N; ++i) {
         m[i] = new T[N];
     }
     return m;
@@ -38,8 +38,8 @@ T** newMatrix(int N) {
 
 
 template<typename T>
-void freeMatrix(T** m, int N) {
-    for (int i = 0; i < N; ++i) {
+void freeMatrix(T** m, size_t N) {
+    for (size_t i = 0; i < N; ++i) {
         delete[] m[i];
     }
     delete[] m;
@@ -47,11 +47,11 @@ void freeMatrix(T** m, int N) {
 
 
 template<typename T>
-void randomMatrix(T** m, int N, unsigned seed) {
+void randomMatrix(T** m, size_t N, unsigned seed, int left, int right) {
     std::mt19937 gen(seed);
-    std::uniform_int_distribution<T> uid(1, 99);
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j <= i; ++j) {
+    std::uniform_int_distribution<T> uid(left, right);
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j <= i; ++j) {
             if (i == j) {
                 m[i][j] = 0;
             } else {

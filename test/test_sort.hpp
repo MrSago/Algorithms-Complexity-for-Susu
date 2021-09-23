@@ -13,6 +13,7 @@
 
 template<typename T>
 void _print_vector(std::vector<T>& arr) {
+    std::cout << '\n';
     for (auto& it : arr) {
         std::cout << it << ' ';
     }

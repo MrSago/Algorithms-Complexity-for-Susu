@@ -9,10 +9,10 @@ static size_t ops = 0;
 
 
 template<typename T>
-long long Floyd(T** w, int N) {
+long long Floyd(T** w, size_t N) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    int k, i, j;
+    size_t k, i, j;
     ops = 3;
     for (k = 0; k < N; ++k) {
         for (i = 0; i < N; ++i) {
@@ -35,10 +35,10 @@ long long Floyd(T** w, int N) {
 
 
 template<typename T>
-long long FloydParallel(T** w, int N, int threads) {
+long long FloydParallel(T** w, size_t N, int threads) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    int k, i, j;
+    size_t k, i, j;
     omp_set_num_threads(threads);
     #pragma omp parallel shared(w) private(k, i, j)
     {

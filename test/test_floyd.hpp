@@ -1,6 +1,6 @@
 
-#ifndef _FLOYD_TEST_HPP
-#define _FLOYD_TEST_HPP
+#ifndef _TEST_FLOYD_HPP
+#define _TEST_FLOYD_HPP
 
 #include <iostream>
 #include <iomanip>
@@ -12,6 +12,8 @@
 
 template<typename T>
 void singleThreadFloydTest(std::vector<size_t>& matrix_sizes) {
+    extern size_t ops;
+
     std::cout << "\n============ Floyd in one thread ============\n";
 
     std::cout << "    "
@@ -20,19 +22,18 @@ void singleThreadFloydTest(std::vector<size_t>& matrix_sizes) {
               << "Operations\n";
 
     for (auto& sz : matrix_sizes) {
-        int sz_int = static_cast<int>(sz);
         ops = 0;
 
-        T** matrix = newMatrix<T>(sz_int);
-        randomMatrix(matrix, sz_int, time(0));
-        long long time_calc = Floyd(matrix, sz_int);
+        T** matrix = newMatrix<T>(sz);
+        randomMatrix(matrix, sz, static_cast<unsigned>(time(0)), 1, 9);
+        long long time_calc = Floyd(matrix, sz);
 
         std::cout << "    "
-                  << std::setw(15) << std::left << sz_int
+                  << std::setw(15) << std::left << sz
                   << std::setw(15) << std::left << time_calc * 1e-9
                   << ops << '\n';
 
-        freeMatrix(matrix, sz_int);
+        freeMatrix(matrix, sz);
     }
 
     std::cout << "=============================================\n\n";
@@ -41,6 +42,8 @@ void singleThreadFloydTest(std::vector<size_t>& matrix_sizes) {
 
 template<typename T>
 void multiThreadFloydTest(std::vector<size_t>& matrix_sizes, int threads) {
+    extern size_t ops;
+
     std::cout << "\n============ Floyd in " << threads << " threads ============\n";
 
     std::cout << "    "
@@ -49,23 +52,22 @@ void multiThreadFloydTest(std::vector<size_t>& matrix_sizes, int threads) {
               << "Operations\n";
 
     for (auto& sz : matrix_sizes) {
-        int sz_int = static_cast<int>(sz);
         ops = 0;
 
-        T** matrix = newMatrix<T>(sz_int);
-        randomMatrix(matrix, sz_int, time(0));
-        long long time_calc = FloydParallel(matrix, sz_int, threads);
+        T** matrix = newMatrix<T>(sz);
+        randomMatrix(matrix, sz, static_cast<unsigned>(time(0)), 1, 9);
+        long long time_calc = FloydParallel(matrix, sz, threads);
 
         std::cout << "    "
-                  << std::setw(15) << std::left << sz_int
+                  << std::setw(15) << std::left << sz
                   << std::setw(15) << std::left << time_calc * 1e-9
                   << ops << '\n';
 
-        freeMatrix(matrix, sz_int);
+        freeMatrix(matrix, sz);
     }
 
     std::cout << "=============================================\n\n";
 }
 
-#endif //_FLOYD_TEST_HPP
+#endif //_TEST_FLOYD_HPP
 
