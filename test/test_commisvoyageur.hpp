@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <cstring>
 
 #include "../algo/commisvoyageur.hpp"
 #include "../tools/matrix.hpp"
@@ -38,7 +39,7 @@ void commisvoyageurTest(const char algo_name[],
         freeMatrix(matrix, sz);
     }
 
-    std::cout << "=============================================\n\n";
+    std::cout << "============================" << std::string(strlen(algo_name), '=') << "=============\n\n";
 }
 
 #endif //_TEST_COMMISVOYAGEUR_HPP
