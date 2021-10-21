@@ -13,9 +13,9 @@ int main () {
     std::vector<size_t> greedy_sizes = { 1000, 2000, 3000, 5000, 10000,
                                          15000, 20000, 30000, 50000, 100000 };
 
-    std::cerr << "Testing started...\n";
+    std::cerr << "Testing started...";
 
-    std::cerr << "Commisvoyageur Brute Force...";
+    std::cerr << "\nCommisvoyageur Brute Force...";
     commisvoyageurTest<mytype_t>("Brute Force", commisvoyageurBrute, brute_force_sizes);
 
     std::cerr << "\nCommisvoyageur Gready...";

@@ -14,10 +14,10 @@ int main() {
 
     std::cerr << "Testing started...";
 
-    std::cerr << "Insertion Sort test...";
+    std::cerr << "\nInsertion Sort test...";
     startTestSort<mytype_t>("Insertion Sort", insertionSort, arr_sizes);
 
-    std::cerr << "Selection Sort test...";
+    std::cerr << "\nSelection Sort test...";
     startTestSort<mytype_t>("Selection Sort", selectionSort, arr_sizes);
 
     std::cerr << "\nDone!";

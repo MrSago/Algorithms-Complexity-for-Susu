@@ -16,10 +16,10 @@ int main() {
 
     std::cerr << "Testing started...";
 
-    std::cerr << "Quick Sort (Best-Avarage case) test...";
+    std::cerr << "\nQuick Sort (Best-Avarage case) test...";
     startTestSort<mytype_t>("Quick Sort (Best-Avarage case)", quickSort, arr_sizes);
 
-    std::cerr << "Quick Sort (Worst case) test...";
+    std::cerr << "\nQuick Sort (Worst case) test...";
     startTestSort<mytype_t>("Quick Sort (Worst case)", quickSortWorst, arr_sizes_worst);
 
     std::cerr << "\nDone!";
