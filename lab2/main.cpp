@@ -13,8 +13,13 @@ int main() {
                                       15000, 20000, 30000, 50000, 100000 };
 
     std::cerr << "Testing started...";
+
+    std::cerr << "Insertion Sort test...";
     startTestSort<mytype_t>("Insertion Sort", insertionSort, arr_sizes);
+
+    std::cerr << "Selection Sort test...";
     startTestSort<mytype_t>("Selection Sort", selectionSort, arr_sizes);
+
     std::cerr << "\nDone!";
 
     return 0;

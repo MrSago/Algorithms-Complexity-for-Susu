@@ -8,7 +8,7 @@
 
 #include "../tools/fact.hpp"
 
-struct commisvoyag_t {
+struct commisvoyag_s {
     long long time_calc;
     uint64_t sum_path;
     std::vector<size_t> path;
@@ -44,10 +44,20 @@ inline uint64_t _len_path(T** w, std::vector<size_t>& perm, size_t vert_start) {
 
 
 template<typename T>
-commisvoyag_t commisvoyageurBrute(T** w, size_t N, size_t vert_start) {
+inline T _min_element_col(T** m, size_t i, size_t N) {
+    T min_el = m[0][i];
+    for (size_t j = 1; j < N; ++j) {
+        min_el = min(min_el, ws[j][i]);
+    }
+    return min_el;
+}
+
+
+template<typename T>
+commisvoyag_s commisvoyageurBrute(T** w, size_t N, size_t vert_start) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    commisvoyag_t result;
+    commisvoyag_s result;
     result.sum_path = UINT64_MAX;
 
     std::vector<size_t> perm(N - 1);
@@ -82,11 +92,12 @@ commisvoyag_t commisvoyageurBrute(T** w, size_t N, size_t vert_start) {
 
 
 template<typename T>
-commisvoyag_t commisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
+commisvoyag_s commisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
     auto start = std::chrono::high_resolution_clock::now();
 
-    commisvoyag_t result;
+    commisvoyag_s result;
     result.sum_path = 0;
+    result.path.resize(N - 1);
 
     std::vector<bool> used(N, false);
     used[vert_start] = true;
@@ -112,7 +123,7 @@ commisvoyag_t commisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
         }
 
         result.sum_path += min_vert;
-        result.path.push_back(save_pos);
+        result.path[i] = save_pos;
 
         used[save_pos] = true;
         vert_cur = save_pos;
@@ -122,6 +133,56 @@ commisvoyag_t commisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
     result.sum_path += static_cast<uint64_t>(w[vert_cur][vert_start]);
 
     ops += 15 + N;
+
+    auto stop = std::chrono::high_resolution_clock::now();
+    result.time_calc = (stop - start).count();
+
+    return result;
+}
+
+
+template<typename T>
+commisvoyag_s commisvoyageurBranchAndBound(T** w, size_t N, size_t vert_start) {
+    auto start = std::chrono::high_resolution_clock::now();
+
+    commisvoyag_s result;
+    result.sum_path = 0;
+    result.path.resize(N - 1);
+
+    T** ws = newMatrix(N);
+    for (size_t i = 0; i < N; ++i) {
+        memcpy(ws[i], w[i], sizeof(T) * N);
+        ws[i][i] = INT_MAX;
+    }
+
+    for (size_t k = N ; k > 2; --k) {
+        for (size_t i = 0; i < N; ++i) {
+            T min_str = *min_element(ws[i], ws[i] + N);
+            T min_col = _min_element_col(ws, i, N);
+
+            result.sum_path += static_cast<uint64_t>(min_str + min_col);
+
+            if (min_str > 0) {
+                for (size_t j = 0; j < N; ++j) {
+                    ws[i][j] -= min_str;
+                }
+            }
+            if (min_col > 0) {
+                for (size_t j = 0; j < N; ++j) {
+                    ws[j][i] -= min_col;
+                }
+            }
+        }
+
+        T gamilton_value = 0;
+        for (size_t i = 0; i < N; ++i) {
+            for (size_t j = 0; j < N; ++j) {
+                if (ws[i][j] == 0) {
+                    
+                }
+            }
+        }
+    }
 
     auto stop = std::chrono::high_resolution_clock::now();
     result.time_calc = (stop - start).count();

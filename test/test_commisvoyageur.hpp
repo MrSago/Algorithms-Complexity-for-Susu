@@ -13,7 +13,7 @@
 
 template<typename T>
 void commisvoyageurTest(const char algo_name[],
-                        commisvoyag_t (*algo_fun)(T**, size_t, size_t),
+                        commisvoyag_s (*algo_fun)(T**, size_t, size_t),
                         std::vector<size_t>& matrix_sizes) {
     extern size_t ops;
 
@@ -29,7 +29,7 @@ void commisvoyageurTest(const char algo_name[],
 
         T** matrix = newMatrix<T>(sz);
         randomMatrix(matrix, sz, 0, 1, 99);
-        commisvoyag_t res = algo_fun(matrix, sz, 0);
+        commisvoyag_s res = algo_fun(matrix, sz, 0);
 
         std::cout << "    "
                   << std::setw(15) << std::left << sz
