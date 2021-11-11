@@ -6,7 +6,9 @@
 #include <algorithm>
 #include <chrono>
 
+#include "../tools/matrix.hpp"
 #include "../tools/fact.hpp"
+
 
 struct commisvoyag_s {
     long long time_calc;
@@ -15,7 +17,8 @@ struct commisvoyag_s {
 };
 
 static size_t ops = 0;
-static constexpr auto fact = precalc_fact<15>();
+constexpr auto fact = precalc_fact<15>();
+constexpr int INF = int(1e9);
 
 
 template<typename T>
@@ -42,19 +45,8 @@ inline uint64_t _len_path(T** w, std::vector<size_t>& perm, size_t vert_start) {
     return sum_path + static_cast<uint64_t>(tmp);
 }
 
-
 template<typename T>
-inline T _min_element_col(T** m, size_t i, size_t N) {
-    T min_el = m[0][i];
-    for (size_t j = 1; j < N; ++j) {
-        min_el = min(min_el, ws[j][i]);
-    }
-    return min_el;
-}
-
-
-template<typename T>
-commisvoyag_s commisvoyageurBrute(T** w, size_t N, size_t vert_start) {
+commisvoyag_s commisvoyageurBruteForce(T** w, size_t N, size_t vert_start) {
     auto start = std::chrono::high_resolution_clock::now();
 
     commisvoyag_s result;
@@ -104,25 +96,25 @@ commisvoyag_s commisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
 
     size_t vert_cur = vert_start;
     for (size_t i = 0; i < N - 1; ++i) {
-        uint64_t min_vert = UINT64_MAX;
+        uint64_t min_weight = UINT64_MAX;
         size_t save_pos = 0;
 
         for (size_t j = 0; j < N; ++j) {
-            T vert = w[vert_cur][j];
-            if (j != vert_cur && !used[j] && vert > 0 &&
-                static_cast<uint64_t>(vert) < min_vert) {
-                min_vert = static_cast<uint64_t>(vert);
+            T weight = w[vert_cur][j];
+            if (j != vert_cur && !used[j] && weight > 0 &&
+                static_cast<uint64_t>(weight) < min_weight) {
+                min_weight = static_cast<uint64_t>(weight);
                 save_pos = j;
                 ops += 12;
             }
             ops += 25;
         }
 
-        if (min_vert == UINT64_MAX) {
+        if (min_weight == UINT64_MAX) {
             throw std::runtime_error("Path not found!");
         }
 
-        result.sum_path += min_vert;
+        result.sum_path += min_weight;
         result.path[i] = save_pos;
 
         used[save_pos] = true;
@@ -142,6 +134,63 @@ commisvoyag_s commisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
 
 
 template<typename T>
+inline void _copy_matrix(T** m, size_t N, T** out) {
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < N; ++j) {
+            out[i][j] = m[i][j];
+        }
+    }
+}
+
+template<typename T>
+inline T _min_element_col(T** m, size_t i, size_t N) {
+    T min_el = m[0][i];
+    for (size_t j = 1; j < N; ++j) {
+        min_el = std::min(min_el, m[j][i]);
+    }
+    return min_el;
+}
+
+template<typename T>
+inline uint64_t _reduction_matrix(T** m, size_t N) {
+    uint64_t cost = 0;
+
+    for (size_t i = 0; i < N; ++i) {
+        T min_str = *std::min_element(m[i], m[i] + N);
+        if (min_str > 0 && min_str != INF) {
+            cost += static_cast<uint64_t>(min_str);
+            for (size_t j = 0; j < N; ++j) {
+                if (m[i][j] > 0 && m[i][j] != INF) {
+                    m[i][j] -= min_str;
+                }
+            }
+        }
+    }
+
+    for (size_t i = 0; i < N; ++i) {
+        T min_col = _min_element_col(m, i, N);
+        if (min_col > 0 && min_col != INF) {
+            cost += static_cast<uint64_t>(min_col);
+            for (size_t j = 0; j < N; ++j) {
+                if (m[j][i] > 0 && m[j][i] != INF) {
+                    m[j][i] -= min_col;
+                }
+            }
+        }
+    }
+
+    return cost;
+}
+
+template<typename T>
+inline void _process_matrix(T** m, size_t N, size_t start, size_t from, size_t to) {
+    m[to][start] = INF;
+    for (size_t i = 0; i < N; ++i) {
+        m[from][i] = m[i][to] = INF;
+    }
+}
+
+template<typename T>
 commisvoyag_s commisvoyageurBranchAndBound(T** w, size_t N, size_t vert_start) {
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -149,40 +198,51 @@ commisvoyag_s commisvoyageurBranchAndBound(T** w, size_t N, size_t vert_start) {
     result.sum_path = 0;
     result.path.resize(N - 1);
 
-    T** ws = newMatrix(N);
+    size_t prev_vert = vert_start;
+    std::vector<bool> used(N, false);
+    used[prev_vert] = true;
+
+    T** w_cur = newMatrix<T>(N);
+    T** w_prev = newMatrix<T>(N);
+    _copy_matrix(w, N, w_prev);
     for (size_t i = 0; i < N; ++i) {
-        memcpy(ws[i], w[i], sizeof(T) * N);
-        ws[i][i] = INT_MAX;
+        w_prev[i][i] = INF;
     }
 
-    for (size_t k = N ; k > 2; --k) {
-        for (size_t i = 0; i < N; ++i) {
-            T min_str = *min_element(ws[i], ws[i] + N);
-            T min_col = _min_element_col(ws, i, N);
+    result.sum_path += _reduction_matrix(w_prev, N);
 
-            result.sum_path += static_cast<uint64_t>(min_str + min_col);
+    for (size_t k = 0; k < N - 1; ++k) {
+        uint64_t min_cost = UINT64_MAX;
+        size_t min_vert = UINT64_MAX;
 
-            if (min_str > 0) {
-                for (size_t j = 0; j < N; ++j) {
-                    ws[i][j] -= min_str;
-                }
-            }
-            if (min_col > 0) {
-                for (size_t j = 0; j < N; ++j) {
-                    ws[j][i] -= min_col;
+        for (size_t v = 0; v < N; ++v) {
+            if (!used[v]) {
+                _copy_matrix(w_prev, N, w_cur);
+                _process_matrix(w_cur, N, vert_start, prev_vert, v);
+                uint64_t cost = _reduction_matrix(w_cur, N) + w_prev[prev_vert][v];
+                if (cost < min_cost) {
+                    min_cost = cost;
+                    min_vert = v;
                 }
             }
         }
 
-        T gamilton_value = 0;
-        for (size_t i = 0; i < N; ++i) {
-            for (size_t j = 0; j < N; ++j) {
-                if (ws[i][j] == 0) {
-                    
-                }
-            }
+        if (min_cost == UINT64_MAX) {
+            throw std::runtime_error("Path not found!");
         }
+
+        _process_matrix(w_prev, N, vert_start, prev_vert, min_vert);
+        _reduction_matrix(w_prev, N);
+
+        result.path[k] = min_vert;
+        result.sum_path += min_cost;
+
+        used[min_vert] = true;
+        prev_vert = min_vert;
     }
+
+    freeMatrix(w_cur, N);
+    freeMatrix(w_prev, N);
 
     auto stop = std::chrono::high_resolution_clock::now();
     result.time_calc = (stop - start).count();

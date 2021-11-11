@@ -7,10 +7,10 @@
 
 
 template<typename T>
-void readMatrix(T** matrix, size_t N) {
+void readMatrix(T** m, size_t N) {
     for (size_t i = 0; i < N; ++i) {
         for (size_t j = 0; j < N; ++j) {
-            std::cin >> matrix[i][j];
+            std::cin >> m[i][j];
         }
     }
 }
@@ -20,10 +20,15 @@ template<typename T>
 void printMatrix(T** m, size_t N) {
     for (size_t i = 0; i < N; ++i) {
         for (size_t j = 0; j < N; ++j) {
-            std::cout << m[i][j] << ' ';
+            if (m[i][j] == int(1e9)) {
+                std::cout << "@ ";
+            } else {
+                std::cout << m[i][j] << ' ';
+            }
         }
         std::cout << '\n';
     }
+    std::cout << '\n';
 }
 
 
