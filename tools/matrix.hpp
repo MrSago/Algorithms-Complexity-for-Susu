@@ -7,7 +7,7 @@
 
 
 template<typename T>
-void readMatrix(T** m, size_t N) {
+void ReadMatrix(T** m, size_t N) {
     for (size_t i = 0; i < N; ++i) {
         for (size_t j = 0; j < N; ++j) {
             std::cin >> m[i][j];
@@ -17,7 +17,7 @@ void readMatrix(T** m, size_t N) {
 
 
 template<typename T>
-void printMatrix(T** m, size_t N) {
+void PrintMatrix(T** m, size_t N) {
     for (size_t i = 0; i < N; ++i) {
         for (size_t j = 0; j < N; ++j) {
             if (m[i][j] == int(1e9)) {
@@ -33,7 +33,7 @@ void printMatrix(T** m, size_t N) {
 
 
 template<typename T>
-T** newMatrix(size_t N) {
+T** NewMatrix(size_t N) {
     T** m = new T*[N];
     for (size_t i = 0; i < N; ++i) {
         m[i] = new T[N];
@@ -43,7 +43,7 @@ T** newMatrix(size_t N) {
 
 
 template<typename T>
-void freeMatrix(T** m, size_t N) {
+void FreeMatrix(T** m, size_t N) {
     for (size_t i = 0; i < N; ++i) {
         delete[] m[i];
     }
@@ -52,7 +52,7 @@ void freeMatrix(T** m, size_t N) {
 
 
 template<typename T>
-void randomMatrix(T** m, size_t N, unsigned seed, int left, int right) {
+void RandomMatrix(T** m, size_t N, unsigned seed, int left, int right) {
     std::mt19937 gen(seed);
     std::uniform_int_distribution<T> uid(left, right);
     for (size_t i = 0; i < N; ++i) {
@@ -62,6 +62,16 @@ void randomMatrix(T** m, size_t N, unsigned seed, int left, int right) {
             } else {
                 m[i][j] = m[j][i] = uid(gen);
             }
+        }
+    }
+}
+
+
+template<typename T>
+void CopyMatrix(T** m, size_t N, T** out) {
+    for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < N; ++j) {
+            out[i][j] = m[i][j];
         }
     }
 }

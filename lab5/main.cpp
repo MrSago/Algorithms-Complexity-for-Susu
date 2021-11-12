@@ -12,14 +12,10 @@ int main() {
     std::vector<size_t> matrix_sizes { 100, 200, 300, 500, 750,
                                        1000, 1500, 2000, 2500, 3000 };
 
+
     std::cerr << "Testing started...";
-
-    std::cerr << "\nSignle thread Floyd test...";
-    singleThreadFloydTest<mytype_t>(matrix_sizes);
-
-    std::cerr << "\nMulti threads Floyd test...";
-    multiThreadFloydTest<mytype_t>(matrix_sizes, threads);
-
+    SingleThreadFloydTest<mytype_t>(matrix_sizes);
+    MultiThreadFloydTest<mytype_t>(matrix_sizes, threads);
     std::cerr << "\nDone!\n";
 
     return 0;

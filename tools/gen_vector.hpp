@@ -7,11 +7,12 @@
 #include <random>
 #include <ctime>
 
+
 constexpr int RANGE = int(1e9);
 
 
 template<typename T>
-std::vector<T> randomVector(size_t sz) {
+std::vector<T> RandomVector(size_t sz) {
     std::mt19937 gen(time(NULL));
     std::uniform_int_distribution<T> uid(-RANGE, RANGE);
     std::vector<T> arr(sz);
@@ -22,7 +23,7 @@ std::vector<T> randomVector(size_t sz) {
 
 
 template<typename T>
-std::vector<T> increasingVector(size_t sz) {
+std::vector<T> IncreasingVector(size_t sz) {
     std::vector<T> arr(sz);
     std::iota(arr.begin(), arr.end(), 0);
     return arr;
@@ -30,7 +31,7 @@ std::vector<T> increasingVector(size_t sz) {
 
 
 template<typename T>
-std::vector<T> decreasingVector(size_t sz) {
+std::vector<T> DecreasingVector(size_t sz) {
     std::vector<T> arr(sz);
     std::iota(arr.rbegin(), arr.rend(), 0);
     return arr;

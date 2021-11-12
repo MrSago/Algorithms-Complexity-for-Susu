@@ -11,8 +11,10 @@
 
 
 template<typename T>
-void singleThreadFloydTest(std::vector<size_t>& matrix_sizes) {
+void SingleThreadFloydTest(std::vector<size_t>& matrix_sizes) {
     extern size_t ops;
+
+    std::cerr << "\nFloyd in one thread test...";
 
     std::cout << "\n============ Floyd in one thread ============\n";
 
@@ -24,8 +26,8 @@ void singleThreadFloydTest(std::vector<size_t>& matrix_sizes) {
     for (auto& sz : matrix_sizes) {
         ops = 0;
 
-        T** matrix = newMatrix<T>(sz);
-        randomMatrix(matrix, sz, static_cast<unsigned>(time(0)), 1, 9);
+        T** matrix = NewMatrix<T>(sz);
+        RandomMatrix(matrix, sz, static_cast<unsigned>(time(0)), 1, 9);
         long long time_calc = Floyd(matrix, sz);
 
         std::cout << "    "
@@ -33,7 +35,7 @@ void singleThreadFloydTest(std::vector<size_t>& matrix_sizes) {
                   << std::setw(15) << std::left << time_calc * 1e-9
                   << ops << '\n';
 
-        freeMatrix(matrix, sz);
+        FreeMatrix(matrix, sz);
     }
 
     std::cout << "=============================================\n\n";
@@ -41,8 +43,10 @@ void singleThreadFloydTest(std::vector<size_t>& matrix_sizes) {
 
 
 template<typename T>
-void multiThreadFloydTest(std::vector<size_t>& matrix_sizes, int threads) {
+void MultiThreadFloydTest(std::vector<size_t>& matrix_sizes, int threads) {
     extern size_t ops;
+
+    std::cerr << "\nFloyd in " << threads << " threads test...";
 
     std::cout << "\n============ Floyd in " << threads << " threads ============\n";
 
@@ -54,8 +58,8 @@ void multiThreadFloydTest(std::vector<size_t>& matrix_sizes, int threads) {
     for (auto& sz : matrix_sizes) {
         ops = 0;
 
-        T** matrix = newMatrix<T>(sz);
-        randomMatrix(matrix, sz, static_cast<unsigned>(time(0)), 1, 9);
+        T** matrix = NewMatrix<T>(sz);
+        RandomMatrix(matrix, sz, static_cast<unsigned>(time(0)), 1, 9);
         long long time_calc = FloydParallel(matrix, sz, threads);
 
         std::cout << "    "
@@ -63,7 +67,7 @@ void multiThreadFloydTest(std::vector<size_t>& matrix_sizes, int threads) {
                   << std::setw(15) << std::left << time_calc * 1e-9
                   << ops << '\n';
 
-        freeMatrix(matrix, sz);
+        FreeMatrix(matrix, sz);
     }
 
     std::cout << "=============================================\n\n";
