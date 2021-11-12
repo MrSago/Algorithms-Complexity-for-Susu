@@ -193,9 +193,9 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
     result.sum_path = 0;
     result.path.resize(N - 1);
 
-    size_t prev_vert = vert_start;
+    size_t vert_prev = vert_start;
     std::vector<bool> used(N, false);
-    used[prev_vert] = true;
+    used[vert_prev] = true;
 
     T** w_cur = NewMatrix<T>(N);
     T** w_prev = NewMatrix<T>(N);
@@ -207,33 +207,33 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
     result.sum_path += _reduction_matrix(w_prev, N);
 
     for (size_t k = 0; k < N - 1; ++k) {
-        uint64_t min_cost = UINT64_MAX;
-        size_t min_vert = UINT64_MAX;
+        uint64_t cost_min = UINT64_MAX;
+        size_t vert_min = SIZE_MAX;
 
-        for (size_t v = 0; v < N; ++v) {
-            if (!used[v]) {
+        for (size_t vert_cur = 0; vert_cur < N; ++vert_cur) {
+            if (!used[vert_cur]) {
                 CopyMatrix(w_prev, N, w_cur);
-                _process_matrix(w_cur, N, vert_start, prev_vert, v);
-                uint64_t cost = _reduction_matrix(w_cur, N) + w_prev[prev_vert][v];
-                if (cost < min_cost) {
-                    min_cost = cost;
-                    min_vert = v;
+                _process_matrix(w_cur, N, vert_start, vert_prev, vert_cur);
+                uint64_t cost = _reduction_matrix(w_cur, N) + w_prev[vert_prev][vert_cur];
+                if (cost < cost_min) {
+                    cost_min = cost;
+                    vert_min = vert_cur;
                 }
             }
         }
 
-        if (min_cost == UINT64_MAX) {
+        if (cost_min == UINT64_MAX) {
             throw std::runtime_error("Path not found!");
         }
 
-        _process_matrix(w_prev, N, vert_start, prev_vert, min_vert);
+        _process_matrix(w_prev, N, vert_start, vert_prev, vert_min);
         _reduction_matrix(w_prev, N);
 
-        result.path[k] = min_vert;
-        result.sum_path += min_cost;
+        used[vert_min] = true;
+        vert_prev = vert_min;
 
-        used[min_vert] = true;
-        prev_vert = min_vert;
+        result.path[k] = vert_min;
+        result.sum_path += cost_min;
     }
 
     FreeMatrix(w_cur, N);
