@@ -9,7 +9,93 @@ static size_t ops = 0;
 
 
 template<typename T>
-bool check_sort(T* arr, size_t sz) {
+int _partition(T* arr, size_t low, size_t high) {
+    ops += 8;
+    T pi = arr[(low + high) / 2];
+    for (size_t i = low, j = high; ; ++i, --j) {
+        while (arr[i] < pi) {
+            ++i;
+            ops += 4;
+        }
+        while (arr[j] > pi) {
+            --j;
+            ops += 4;
+        }
+        if (i >= j) {
+            ops += 4;
+            return j;
+        }
+        T tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        ops += 18;
+    }
+    throw std::runtime_error("Search partition error");
+}
+
+
+template<typename T>
+void _rec_qs(T* arr, size_t low, size_t high) {
+    while (low < high) {
+        size_t p = _partition(arr, low, high);
+        if (p - low < high - p) {
+            _rec_qs(arr, low, p);
+            low = p + 1;
+        } else {
+            _rec_qs(arr, p + 1, high);
+            high = p;
+        }
+        ops += 15;
+    }
+    ops += 4;
+}
+
+
+template<typename T>
+int _partition_worst(T* arr, size_t low, size_t high) {
+    ops += 7;
+    T pi = arr[high - 1];
+    for (size_t i = low, j = high; ; ++i, --j) {
+        while (arr[i] < pi) {
+            ++i;
+            ops += 4;
+        }
+        while (arr[j] > pi) {
+            --j;
+            ops += 4;
+        }
+        if (i >= j) {
+            ops += 4;
+            return j;
+        }
+        T tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+        ops += 18;
+    }
+    throw std::runtime_error("Search partition error");
+}
+
+
+template<typename T>
+void _rec_qs_worst(T* arr, size_t low, size_t high) {
+    while (low < high) {
+        size_t p = _partition_worst(arr, low, high);
+        if (p - low < high - p) {
+            _rec_qs_worst(arr, low, p);
+            low = p + 1;
+        } else {
+            _rec_qs_worst(arr, p + 1, high);
+            high = p;
+        }
+        ops += 15;
+    }
+    ops += 4;
+}
+
+
+template<typename T>
+bool CheckSort(T* arr, size_t sz) {
     for (size_t i = 1; i < sz; ++i) {
         if (arr[i - 1] > arr[i]) {
             return false;
@@ -71,102 +157,20 @@ long long SelectionSort(T* arr, size_t sz) {
 
 
 template<typename T>
-inline int partition(T* arr, size_t low, size_t high) {
-    ops += 8;
-    T pi = arr[(low + high) / 2];
-    for (size_t i = low, j = high; ; ++i, --j) {
-        while (arr[i] < pi) {
-            ++i;
-            ops += 4;
-        }
-        while (arr[j] > pi) {
-            --j;
-            ops += 4;
-        }
-        if (i >= j) {
-            ops += 4;
-            return j;
-        }
-        T tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-        ops += 18;
-    }
-    throw std::runtime_error("Search partition error");
-}
-
-template<typename T>
-void rec_qs(T* arr, size_t low, size_t high) {
-    while (low < high) {
-        size_t p = partition(arr, low, high);
-        if (p - low < high - p) {
-            rec_qs(arr, low, p);
-            low = p + 1;
-        } else {
-            rec_qs(arr, p + 1, high);
-            high = p;
-        }
-        ops += 15;
-    }
-    ops += 4;
-}
-
-template<typename T>
 long long QuickSort(T* arr, size_t sz) {
     ops = 5;
     auto start = std::chrono::high_resolution_clock::now();
-    rec_qs(arr, 0, sz - 1);
+    _rec_qs(arr, 0, sz - 1);
     auto stop = std::chrono::high_resolution_clock::now();
     return (stop - start).count();
 }
 
 
 template<typename T>
-inline int partition_worst(T* arr, size_t low, size_t high) {
-    ops += 7;
-    T pi = arr[high - 1];
-    for (size_t i = low, j = high; ; ++i, --j) {
-        while (arr[i] < pi) {
-            ++i;
-            ops += 4;
-        }
-        while (arr[j] > pi) {
-            --j;
-            ops += 4;
-        }
-        if (i >= j) {
-            ops += 4;
-            return j;
-        }
-        T tmp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = tmp;
-        ops += 18;
-    }
-    throw std::runtime_error("Search partition error");
-}
-
-template<typename T>
-void rec_qs_worst(T* arr, size_t low, size_t high) {
-    while (low < high) {
-        size_t p = partition_worst(arr, low, high);
-        if (p - low < high - p) {
-            rec_qs_worst(arr, low, p);
-            low = p + 1;
-        } else {
-            rec_qs_worst(arr, p + 1, high);
-            high = p;
-        }
-        ops += 15;
-    }
-    ops += 4;
-}
-
-template<typename T>
 long long QuickSortWorst(T* arr, size_t sz) {
     ops = 5;
     auto start = std::chrono::high_resolution_clock::now();
-    rec_qs_worst(arr, 0, sz - 1);
+    _rec_qs_worst(arr, 0, sz - 1);
     auto stop = std::chrono::high_resolution_clock::now();
     return (stop - start).count();
 }

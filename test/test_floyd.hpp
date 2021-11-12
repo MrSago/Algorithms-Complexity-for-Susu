@@ -2,9 +2,9 @@
 #ifndef _TEST_FLOYD_HPP
 #define _TEST_FLOYD_HPP
 
-#include <iostream>
-#include <iomanip>
 #include <ctime>
+#include <iomanip>
+#include <iostream>
 
 #include "../algo/floyd.hpp"
 #include "../tools/matrix.hpp"

@@ -16,7 +16,6 @@ int main () {
     std::vector<size_t> bnb_sizes = { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
     std::vector<size_t> ls_sizes = { };
 
-
     std::cerr << "Testing started...";
     // CommisvoyageurTest<mytype_t>("Brute Force", CommisvoyageurBruteForce, brute_force_sizes);
     // CommisvoyageurTest<mytype_t>("Greedy", CommisvoyageurGreedy, greedy_sizes);

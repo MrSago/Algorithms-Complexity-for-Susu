@@ -2,22 +2,23 @@
 #ifndef _GEN_VECTOR_HPP
 #define _GEN_VECTOR_HPP
 
-#include <vector>
 #include <algorithm>
-#include <random>
 #include <ctime>
-
-
-constexpr int RANGE = int(1e9);
+#include <random>
+#include <vector>
 
 
 template<typename T>
 std::vector<T> RandomVector(size_t sz) {
+    constexpr int RANGE = int(1e9);
+
     std::mt19937 gen(time(NULL));
     std::uniform_int_distribution<T> uid(-RANGE, RANGE);
+
     std::vector<T> arr(sz);
     std::generate(arr.begin(), arr.end(),
                   [&uid, &gen]() -> T { return uid(gen); });
+
     return arr;
 }
 

@@ -2,10 +2,10 @@
 #ifndef _TEST_COMMISVOYAGEUR_HPP
 #define _TEST_COMMISVOYAGEUR_HPP
 
-#include <iostream>
-#include <iomanip>
-#include <vector>
 #include <cstring>
+#include <iomanip>
+#include <iostream>
+#include <vector>
 
 #include "../algo/commisvoyageur.hpp"
 #include "../tools/matrix.hpp"
@@ -17,7 +17,7 @@ void CommisvoyageurTest(const char algo_name[],
                         std::vector<size_t>& matrix_sizes) {
     extern size_t ops;
 
-    std::cerr << algo_name << " test...";
+    std::cerr << '\n' << algo_name << " test...";
 
     std::cout << "\n============ Commisvoyageur " << algo_name << " ============\n";
 

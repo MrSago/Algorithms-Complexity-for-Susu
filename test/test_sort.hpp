@@ -2,27 +2,17 @@
 #ifndef _TEST_SORT_HPP
 #define _TEST_SORT_HPP
 
-#include <iostream>
-#include <iomanip>
-#include <vector>
 #include <cstring>
+#include <iomanip>
+#include <iostream>
+#include <vector>
 
 #include "../algo/sort.hpp"
 #include "../tools/gen_vector.hpp"
 
 
 template<typename T>
-void print_vector(const std::vector<T>& arr) {
-    std::cout << '\n';
-    for (auto& it : arr) {
-        std::cout << it << ' ';
-    }
-    std::cout << '\n';
-}
-
-
-template<typename T>
-void run_test_sort(std::vector<T> (*gen_fun)(size_t),
+void _run_test_sort(std::vector<T> (*gen_fun)(size_t),
                     long long (*sort_fun)(T*, size_t),
                     const std::vector<size_t>& arr_sizes) {
     extern size_t ops;
@@ -38,7 +28,7 @@ void run_test_sort(std::vector<T> (*gen_fun)(size_t),
         std::vector<T> arr = gen_fun(sz);
         long long time_calc = sort_fun(arr.data(), sz);
 
-        if (!check_sort(arr.data(), sz)) {
+        if (!CheckSort(arr.data(), sz)) {
             throw std::runtime_error("Array not sorted!");
         }
 
@@ -51,21 +41,23 @@ void run_test_sort(std::vector<T> (*gen_fun)(size_t),
     std::cout << '\n';
 }
 
+
 template<typename T>
 void StartTestSort(const char sort_name[],
                    long long (*sort_fun)(T*, size_t),
                    const std::vector<size_t>& arr_sizes) {
     std::cerr << '\n' << sort_name << " test...";
+
     std::cout << "\n============== " << sort_name << " ==============\n\n";
 
     std::cout << "Increasing array:\n";
-    run_test_sort(IncreasingVector, sort_fun, arr_sizes);
+    _run_test_sort(IncreasingVector, sort_fun, arr_sizes);
 
     std::cout << "Random array:\n";
-    run_test_sort(RandomVector, sort_fun, arr_sizes);
+    _run_test_sort(RandomVector, sort_fun, arr_sizes);
 
     std::cout << "Decreasing array:\n";
-    run_test_sort(DecreasingVector, sort_fun, arr_sizes);
+    _run_test_sort(DecreasingVector, sort_fun, arr_sizes);
 
     std::cout << "===============" << std::string(strlen(sort_name), '=') << "===============\n\n";
 }
