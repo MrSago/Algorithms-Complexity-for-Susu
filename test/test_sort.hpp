@@ -12,7 +12,7 @@
 
 
 template<typename T>
-void _run_test_sort(std::vector<T> (*gen_fun)(size_t),
+void __run_test_sort(std::vector<T> (*gen_fun)(size_t),
                     long long (*sort_fun)(T*, size_t),
                     const std::vector<size_t>& arr_sizes) {
     extern size_t ops;
@@ -51,13 +51,13 @@ void StartTestSort(const char sort_name[],
     std::cout << "\n============== " << sort_name << " ==============\n\n";
 
     std::cout << "Increasing array:\n";
-    _run_test_sort(IncreasingVector, sort_fun, arr_sizes);
+    __run_test_sort(IncreasingVector, sort_fun, arr_sizes);
 
     std::cout << "Random array:\n";
-    _run_test_sort(RandomVector, sort_fun, arr_sizes);
+    __run_test_sort(RandomVector, sort_fun, arr_sizes);
 
     std::cout << "Decreasing array:\n";
-    _run_test_sort(DecreasingVector, sort_fun, arr_sizes);
+    __run_test_sort(DecreasingVector, sort_fun, arr_sizes);
 
     std::cout << "===============" << std::string(strlen(sort_name), '=') << "===============\n\n";
 }

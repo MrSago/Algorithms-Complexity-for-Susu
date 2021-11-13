@@ -22,7 +22,7 @@ constexpr int INF = int(1e9);
 
 
 template<typename T>
-uint64_t _len_path(T** w, std::vector<size_t>& perm, size_t vert_start) {
+uint64_t __len_path(T** w, std::vector<size_t>& perm, size_t vert_start) {
     uint64_t sum_path = 0;
     size_t cur_vert = vert_start;
 
@@ -47,17 +47,7 @@ uint64_t _len_path(T** w, std::vector<size_t>& perm, size_t vert_start) {
 
 
 template<typename T>
-T _min_element_col(T** m, size_t i, size_t N) {
-    T min_el = m[0][i];
-    for (size_t j = 1; j < N; ++j) {
-        min_el = std::min(min_el, m[j][i]);
-    }
-    return min_el;
-}
-
-
-template<typename T>
-uint64_t _reduction_matrix(T** m, size_t N) {
+uint64_t __reduction_matrix(T** m, size_t N) {
     uint64_t cost = 0;
 
     for (size_t i = 0; i < N; ++i) {
@@ -73,7 +63,7 @@ uint64_t _reduction_matrix(T** m, size_t N) {
     }
 
     for (size_t i = 0; i < N; ++i) {
-        T min_col = _min_element_col(m, i, N);
+        T min_col = MinElementColumn(m, i, N);
         if (min_col > 0 && min_col != INF) {
             cost += static_cast<uint64_t>(min_col);
             for (size_t j = 0; j < N; ++j) {
@@ -89,7 +79,7 @@ uint64_t _reduction_matrix(T** m, size_t N) {
 
 
 template<typename T>
-void _process_matrix(T** m, size_t N, size_t start, size_t from, size_t to) {
+void __prepare_matrix(T** m, size_t N, size_t start, size_t from, size_t to) {
     m[to][start] = INF;
     for (size_t i = 0; i < N; ++i) {
         m[from][i] = m[i][to] = INF;
@@ -115,7 +105,7 @@ CommisvoyageurResult CommisvoyageurBruteForce(T** w, size_t N, size_t vert_start
     ops += 12 + (N - 1) * 2;
 
     do {
-        uint64_t cur_sum = _len_path(w, perm, vert_start);
+        uint64_t cur_sum = __len_path(w, perm, vert_start);
         if (cur_sum < result.sum_path) {
             result.sum_path = cur_sum;
             result.path = perm;
@@ -148,25 +138,25 @@ CommisvoyageurResult CommisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
 
     size_t vert_cur = vert_start;
     for (size_t i = 0; i < N - 1; ++i) {
-        uint64_t min_weight = UINT64_MAX;
+        uint64_t weight_min = UINT64_MAX;
         size_t save_pos = 0;
 
         for (size_t j = 0; j < N; ++j) {
             T weight = w[vert_cur][j];
             if (j != vert_cur && !used[j] && weight > 0 &&
-                static_cast<uint64_t>(weight) < min_weight) {
-                min_weight = static_cast<uint64_t>(weight);
+                static_cast<uint64_t>(weight) < weight_min) {
+                weight_min = static_cast<uint64_t>(weight);
                 save_pos = j;
                 ops += 12;
             }
             ops += 25;
         }
 
-        if (min_weight == UINT64_MAX) {
+        if (weight_min == UINT64_MAX) {
             throw std::runtime_error("Path not found!");
         }
 
-        result.sum_path += min_weight;
+        result.sum_path += weight_min;
         result.path[i] = save_pos;
 
         used[save_pos] = true;
@@ -204,7 +194,7 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
         w_prev[i][i] = INF;
     }
 
-    result.sum_path += _reduction_matrix(w_prev, N);
+    result.sum_path += __reduction_matrix(w_prev, N);
 
     for (size_t k = 0; k < N - 1; ++k) {
         uint64_t cost_min = UINT64_MAX;
@@ -213,8 +203,8 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
         for (size_t vert_cur = 0; vert_cur < N; ++vert_cur) {
             if (!used[vert_cur]) {
                 CopyMatrix(w_prev, N, w_cur);
-                _process_matrix(w_cur, N, vert_start, vert_prev, vert_cur);
-                uint64_t cost = _reduction_matrix(w_cur, N) + w_prev[vert_prev][vert_cur];
+                __prepare_matrix(w_cur, N, vert_start, vert_prev, vert_cur);
+                uint64_t cost = __reduction_matrix(w_cur, N) + w_prev[vert_prev][vert_cur];
                 if (cost < cost_min) {
                     cost_min = cost;
                     vert_min = vert_cur;
@@ -226,8 +216,8 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
             throw std::runtime_error("Path not found!");
         }
 
-        _process_matrix(w_prev, N, vert_start, vert_prev, vert_min);
-        _reduction_matrix(w_prev, N);
+        __prepare_matrix(w_prev, N, vert_start, vert_prev, vert_min);
+        __reduction_matrix(w_prev, N);
 
         used[vert_min] = true;
         vert_prev = vert_min;

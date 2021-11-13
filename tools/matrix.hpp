@@ -76,5 +76,15 @@ void CopyMatrix(T** m, size_t N, T** out) {
     }
 }
 
+
+template<typename T>
+T MinElementColumn(T** m, size_t column, size_t N) {
+    T min_el = m[0][column];
+    for (size_t j = 1; j < N; ++j) {
+        min_el = std::min(min_el, m[j][column]);
+    }
+    return min_el;
+}
+
 #endif //_MATRIX_H
 

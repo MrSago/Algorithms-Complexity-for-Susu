@@ -9,7 +9,7 @@ static size_t ops = 0;
 
 
 template<typename T>
-int _partition(T* arr, size_t low, size_t high) {
+int __partition(T* arr, size_t low, size_t high) {
     ops += 8;
     T pi = arr[(low + high) / 2];
     for (size_t i = low, j = high; ; ++i, --j) {
@@ -35,14 +35,14 @@ int _partition(T* arr, size_t low, size_t high) {
 
 
 template<typename T>
-void _rec_qs(T* arr, size_t low, size_t high) {
+void __rec_qs(T* arr, size_t low, size_t high) {
     while (low < high) {
-        size_t p = _partition(arr, low, high);
+        size_t p = __partition(arr, low, high);
         if (p - low < high - p) {
-            _rec_qs(arr, low, p);
+            __rec_qs(arr, low, p);
             low = p + 1;
         } else {
-            _rec_qs(arr, p + 1, high);
+            __rec_qs(arr, p + 1, high);
             high = p;
         }
         ops += 15;
@@ -52,7 +52,7 @@ void _rec_qs(T* arr, size_t low, size_t high) {
 
 
 template<typename T>
-int _partition_worst(T* arr, size_t low, size_t high) {
+int __partition_worst(T* arr, size_t low, size_t high) {
     ops += 7;
     T pi = arr[high - 1];
     for (size_t i = low, j = high; ; ++i, --j) {
@@ -78,14 +78,14 @@ int _partition_worst(T* arr, size_t low, size_t high) {
 
 
 template<typename T>
-void _rec_qs_worst(T* arr, size_t low, size_t high) {
+void __rec_qs_worst(T* arr, size_t low, size_t high) {
     while (low < high) {
-        size_t p = _partition_worst(arr, low, high);
+        size_t p = __partition_worst(arr, low, high);
         if (p - low < high - p) {
-            _rec_qs_worst(arr, low, p);
+            __rec_qs_worst(arr, low, p);
             low = p + 1;
         } else {
-            _rec_qs_worst(arr, p + 1, high);
+            __rec_qs_worst(arr, p + 1, high);
             high = p;
         }
         ops += 15;
@@ -160,7 +160,7 @@ template<typename T>
 long long QuickSort(T* arr, size_t sz) {
     ops = 5;
     auto start = std::chrono::high_resolution_clock::now();
-    _rec_qs(arr, 0, sz - 1);
+    __rec_qs(arr, 0, sz - 1);
     auto stop = std::chrono::high_resolution_clock::now();
     return (stop - start).count();
 }
@@ -170,7 +170,7 @@ template<typename T>
 long long QuickSortWorst(T* arr, size_t sz) {
     ops = 5;
     auto start = std::chrono::high_resolution_clock::now();
-    _rec_qs_worst(arr, 0, sz - 1);
+    __rec_qs_worst(arr, 0, sz - 1);
     auto stop = std::chrono::high_resolution_clock::now();
     return (stop - start).count();
 }
