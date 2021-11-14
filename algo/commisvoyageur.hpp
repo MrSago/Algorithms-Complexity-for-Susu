@@ -153,10 +153,9 @@ CommisvoyageurResult CommisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
         size_t save_pos = 0;
 
         for (size_t j = 0; j < N; ++j) {
-            T weight = w[vert_cur][j];
-            if (j != vert_cur && !used[j] && weight > 0 &&
-                static_cast<uint64_t>(weight) < weight_min) {
-                weight_min = static_cast<uint64_t>(weight);
+            uint64_t weight = static_cast<uint64_t>(w[vert_cur][j]);
+            if (j != vert_cur && !used[j] && weight > 0 && weight < weight_min) {
+                weight_min = weight;
                 save_pos = j;
                 ops += 12;
             }
@@ -174,10 +173,9 @@ CommisvoyageurResult CommisvoyageurGreedy(T** w, size_t N, size_t vert_start) {
         vert_cur = save_pos;
         ops += 18 + i;
     }
+    ops += 15 + N;
 
     result.sum_path += static_cast<uint64_t>(w[vert_cur][vert_start]);
-
-    ops += 15 + N;
 
     auto stop = std::chrono::high_resolution_clock::now();
     result.time_calc = (stop - start).count();
@@ -227,13 +225,8 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
                 if (cost < cost_min) {
                     cost_min = cost;
                     vert_min = vert_cur;
-                    if (current_matrix) {
-                        w_cur = w_save_false;
-                        current_matrix = false;
-                    } else {
-                        w_cur = w_save_true;
-                        current_matrix = true;
-                    }
+                    w_cur = current_matrix ? w_save_false : w_save_true;
+                    current_matrix = !current_matrix;
                     ops += 5;
                 }
                 ops += N * N;
