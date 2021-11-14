@@ -57,9 +57,13 @@ uint64_t __reduction_matrix(T** m, size_t N) {
             for (size_t j = 0; j < N; ++j) {
                 if (m[i][j] > 0 && m[i][j] != INF) {
                     m[i][j] -= min_str;
+                    ops += 6;
                 }
+                ops += 9;
             }
+            ops += 7;
         }
+        ops += N;
     }
 
     for (size_t i = 0; i < N; ++i) {
@@ -69,11 +73,16 @@ uint64_t __reduction_matrix(T** m, size_t N) {
             for (size_t j = 0; j < N; ++j) {
                 if (m[j][i] > 0 && m[j][i] != INF) {
                     m[j][i] -= min_col;
+                    ops += 6;
                 }
+                ops += 9;
             }
+            ops += 7;
         }
+        ops += N;
     }
 
+    ops += 5;
     return cost;
 }
 
@@ -83,7 +92,9 @@ void __prepare_matrix(T** m, size_t N, size_t start, size_t from, size_t to) {
     m[to][start] = INF;
     for (size_t i = 0; i < N; ++i) {
         m[from][i] = m[i][to] = INF;
+        ops += 8;
     }
+    ops += 5;
 }
 
 
@@ -182,17 +193,25 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
     CommisvoyageurResult result;
     result.sum_path = 0;
     result.path.resize(N - 1);
+    ops += N + 4;
 
     size_t vert_prev = vert_start;
     std::vector<bool> used(N, false);
     used[vert_prev] = true;
+    ops += N + 5;
 
-    T** w_cur = NewMatrix<T>(N);
+    T** w_save_false = NewMatrix<T>(N);
+    T** w_save_true = NewMatrix<T>(N);
+    T** w_cur = w_save_true;
+    bool current_matrix = true;
+    ops += 2 * N * N + 9;
+
     T** w_prev = NewMatrix<T>(N);
     CopyMatrix(w, N, w_prev);
     for (size_t i = 0; i < N; ++i) {
         w_prev[i][i] = INF;
     }
+    ops += 2 * N * N + N;
 
     result.sum_path += __reduction_matrix(w_prev, N);
 
@@ -208,26 +227,43 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
                 if (cost < cost_min) {
                     cost_min = cost;
                     vert_min = vert_cur;
+                    if (current_matrix) {
+                        w_cur = w_save_false;
+                        current_matrix = false;
+                    } else {
+                        w_cur = w_save_true;
+                        current_matrix = true;
+                    }
+                    ops += 5;
                 }
+                ops += N * N;
             }
+            ops += 4;
         }
 
         if (cost_min == UINT64_MAX) {
             throw std::runtime_error("Path not found!");
         }
 
-        __prepare_matrix(w_prev, N, vert_start, vert_prev, vert_min);
-        __reduction_matrix(w_prev, N);
+        if (current_matrix) {
+            std::swap(w_prev, w_save_false);
+        } else {
+            std::swap(w_prev, w_save_true);
+        }
 
         used[vert_min] = true;
         vert_prev = vert_min;
 
         result.path[k] = vert_min;
         result.sum_path += cost_min;
+        ops += 17;
     }
+    ops += 5;
 
-    FreeMatrix(w_cur, N);
+    FreeMatrix(w_save_true, N);
+    FreeMatrix(w_save_false, N);
     FreeMatrix(w_prev, N);
+    ops += 3 * N * N;
 
     auto stop = std::chrono::high_resolution_clock::now();
     result.time_calc = (stop - start).count();
