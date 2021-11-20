@@ -238,11 +238,7 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
             throw std::runtime_error("Path not found!");
         }
 
-        if (current_matrix) {
-            std::swap(w_prev, w_save_false);
-        } else {
-            std::swap(w_prev, w_save_true);
-        }
+        std::swap(w_prev, current_matrix ? w_save_false : w_save_true);
 
         used[vert_min] = true;
         vert_prev = vert_min;
@@ -273,7 +269,7 @@ CommisvoyageurResult CommisvoyageurLocalSearch(T** w, size_t N, size_t vert_star
     result.sum_path = 0;
     result.path.resize(N - 1);
 
-    //
+    
 
     auto stop = std::chrono::high_resolution_clock::now();
     result.time_calc = (stop - start).count();
