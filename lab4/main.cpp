@@ -17,10 +17,9 @@ int main () {
     std::vector<size_t> ls_sizes = { };
 
     std::cerr << "Testing started...";
-    // CommisvoyageurTest<mytype_t>("Brute Force", CommisvoyageurBruteForce, brute_force_sizes);
-    // CommisvoyageurTest<mytype_t>("Greedy", CommisvoyageurGreedy, greedy_sizes);
-    // CommisvoyageurTest<mytype_t>("Branch and Bound", CommisvoyageurBranchAndBound, bnb_sizes);
-    CommisvoyageurTest<mytype_t>("Local Search", CommisvoyageurLocalSearch, ls_sizes);
+    CommisvoyageurTest<mytype_t>("Brute Force", CommisvoyageurBruteForce, brute_force_sizes);
+    CommisvoyageurTest<mytype_t>("Greedy", CommisvoyageurGreedy, greedy_sizes);
+    CommisvoyageurTest<mytype_t>("Branch and Bound", CommisvoyageurBranchAndBound, bnb_sizes);
     std::cerr << "\nDone!\n";
 
     return 0;

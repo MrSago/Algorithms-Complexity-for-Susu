@@ -261,22 +261,5 @@ CommisvoyageurResult CommisvoyageurBranchAndBound(T** w, size_t N, size_t vert_s
 }
 
 
-template<typename T>
-CommisvoyageurResult CommisvoyageurLocalSearch(T** w, size_t N, size_t vert_start) {
-    auto start = std::chrono::high_resolution_clock::now();
-
-    CommisvoyageurResult result;
-    result.sum_path = 0;
-    result.path.resize(N - 1);
-
-    
-
-    auto stop = std::chrono::high_resolution_clock::now();
-    result.time_calc = (stop - start).count();
-
-    return result;
-}
-
-
 #endif //_COMMISVOYAGEUR_HPP
 
